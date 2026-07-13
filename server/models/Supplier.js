@@ -1,13 +1,11 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import { sequelize } from "../db/connection.js";
 
-const supplierSchema = new mongoose.Schema({
-  supplierName: { type: String, required: true },
-  supplierEmail: { type: String, required: true },
-  supplierPhone: { type: String, required: true },
-  supplierAddress: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-  
+const Supplier = sequelize.define("Supplier", {
+  supplierName: { type: DataTypes.STRING, allowNull: false },
+  supplierEmail: { type: DataTypes.STRING, allowNull: false },
+  supplierPhone: { type: DataTypes.STRING, allowNull: false },
+  supplierAddress: { type: DataTypes.STRING, allowNull: false },
 });
 
-const SupplierModel = mongoose.model("Supplier", supplierSchema);
-export default SupplierModel;
+export default Supplier;

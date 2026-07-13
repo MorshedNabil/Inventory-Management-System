@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import { DataTypes } from "sequelize";
+import { sequelize } from "../db/connection.js";
 
-const categorySchema = new mongoose.Schema({
-  categoryName: { type: String, required: true },
-  categoryDescription: { type: String, required: true },
+const Category = sequelize.define("Category", {
+  categoryName: { type: DataTypes.STRING, allowNull: false },
+  categoryDescription: { type: DataTypes.STRING, allowNull: false },
 });
 
-const CategoryModel = mongoose.model("Category", categorySchema);
-export default CategoryModel;
+export default Category;

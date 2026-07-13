@@ -13,7 +13,7 @@ const addSupplier = async (req, res) => {
     // }
 
     // Check if existing
-    const existingSupplier = await Supplier.findOne({ supplierName });
+    const existingSupplier = await Supplier.findOne({ where: { supplierName } });
     if (existingSupplier) {
       return res.status(400).json({
         success: false,
@@ -44,7 +44,7 @@ const addSupplier = async (req, res) => {
 
 const getSupplier = async (req, res) => {
     try {
-        const supplier = await Supplier.find();
+        const supplier = await Supplier.findAll();
         return res.status(200).json({ success: true, supplier });
     } catch (error) {
         console.error('Error fetching Supplier:', error);

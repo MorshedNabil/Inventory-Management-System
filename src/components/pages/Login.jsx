@@ -80,7 +80,7 @@ const Login = () => {
               Enter your email below to login to your account
             </CardDescription>
             <CardAction>
-              <Link to="/register ">
+              <Link to="/register">
                 <Button
                   variant="link"
                   className="hover:text-[#45BA8C] duration-300"

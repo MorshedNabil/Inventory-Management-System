@@ -31,7 +31,7 @@ const Register = () => {
           Get started with Urban Threads
         </CardDescription>
         <CardAction>
-          <Link to="/"><Button variant="link" className="hover:text-[#45BA8C] duration-300">Login</Button></Link>
+          <Link to="/login"><Button variant="link" className="hover:text-[#45BA8C] duration-300">Login</Button></Link>
         </CardAction>
       </CardHeader>
       <CardContent>

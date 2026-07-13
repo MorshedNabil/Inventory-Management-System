@@ -12,7 +12,7 @@ const addCategory = async (req, res) => {
         }
 
         // Check if existing
-        const existingCategory = await Category.findOne({ categoryName });
+        const existingCategory = await Category.findOne({ where: { categoryName } });
         if (existingCategory) {
             return res.status(400).json({ 
                 success: false, 
@@ -45,7 +45,7 @@ const addCategory = async (req, res) => {
 
 const getCategory = async (req, res) => {
     try {
-        const categories = await Category.find();
+        const categories = await Category.findAll();
         return res.status(200).json({ success: true, categories });
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -60,16 +60,12 @@ try {
   const { categoryName, categoryDescription } = req.body;
 
   // Check if the category exists
-  const existingCategory = await Category.findById(id);
+  const existingCategory = await Category.findByPk(id);
   if (!existingCategory) {
     return res.status(404).json({ success: false, message: 'Category not found' });
   }
 
-  const updatedCategory = await Category.findByIdAndUpdate(
-    id,
-    { categoryName, categoryDescription },
-    { new: true }
-  );
+  await existingCategory.update({ categoryName, categoryDescription });
 
   return res.status(200).json({ success: true, message: 'Category updated successfully' });
 } catch (error) {
@@ -83,12 +79,12 @@ const deleteCategory = async (req, res) => {
     const { id } = req.params;
 
     // Check if the category exists
-    const existingCategory = await Category.findById(id);
+    const existingCategory = await Category.findByPk(id);
     if (!existingCategory) {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }
 
-    await Category.findByIdAndDelete(id);
+    await existingCategory.destroy();
     return res.status(200).json({ success: true, message: 'Category deleted successfully' });
   } catch (error) {
     console.error('Error deleting category:', error);

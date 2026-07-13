@@ -7,7 +7,7 @@ const RootLayout = () => {
   const location = useLocation();
 
   // Paths where we don’t want header/footer
-  const hideHeaderFooter = ["/login",];
+  const hideHeaderFooter = ["/login", "/register"];
 
   const shouldHide = hideHeaderFooter.includes(location.pathname);
 
