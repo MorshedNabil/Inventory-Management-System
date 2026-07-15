@@ -121,7 +121,7 @@ const Categories = () => {
   if (loading) return <div className="text-xl text-[#0C2B4E]">Loading....</div>;
 
   const handleEdit = async (category) => {
-    setEditCategory(category._id);
+    setEditCategory(category.id);
     setCategoryName(category.categoryName);
     setCategoryDescription(category.categoryDescription);
   };
@@ -174,7 +174,7 @@ const Categories = () => {
                 </Button>
                 {editCategory && (
                   <Button
-                    type="submit"
+                    type="button"
                     className="mt-3 w-full bg-[#0C2B4E] hover:bg-red-700 duration-300"
                     onClick={handleCancel}
                   >
@@ -198,7 +198,7 @@ const Categories = () => {
             <tbody>
               {/* This map function will now work because categories is an array */}
               {categories.map((category, index) => (
-                <tr key={index}>
+                <tr key={category.id}>
                   <td className="border border-gray-300 p-2">{index + 1}</td>
                   <td className="border border-gray-300 p-2">
                     {category.categoryName}
@@ -216,7 +216,7 @@ const Categories = () => {
                       </Button>
                       <Button
                         className="bg-[#0C2B4E] hover:bg-red-700 duration-300"
-                        onClick={() => handleDelete(category._id)}
+                        onClick={() => handleDelete(category.id)}
                       >
                         Delete
                       </Button>

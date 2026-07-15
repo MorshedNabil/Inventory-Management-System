@@ -1,18 +1,16 @@
 import Supplier from "../models/Supplier.js";
+
 const addSupplier = async (req, res) => {
   try {
-    const { supplierName, supplierEmail, supplierPhone, supplierAddress } =
-      req.body;
+    const { supplierName, company, supplierEmail, supplierPhone, supplierAddress } = req.body;
 
-    // // 1. Manual Validation: Check for empty fields immediately
-    // if (!categoryName || !categoryDescription) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "All fields are required",
-    //   });
-    // }
+    if (!supplierName || !company || !supplierEmail || !supplierPhone || !supplierAddress) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
 
-    // Check if existing
     const existingSupplier = await Supplier.findOne({ where: { supplierName } });
     if (existingSupplier) {
       return res.status(400).json({
@@ -21,11 +19,13 @@ const addSupplier = async (req, res) => {
       });
     }
 
-    const newSupplier = new Supplier({
-      supplierName, supplierEmail, supplierPhone, supplierAddress
+    await Supplier.create({
+      supplierName,
+      company,
+      supplierEmail,
+      supplierPhone,
+      supplierAddress,
     });
-
-    await newSupplier.save();
 
     return res.status(201).json({
       success: true,
@@ -33,7 +33,6 @@ const addSupplier = async (req, res) => {
     });
   } catch (error) {
     console.log("Error adding Supplier:", error);
-    // This ensures the frontend gets a JSON response even on server error
     return res.status(500).json({
       success: false,
       message: "Server error",
@@ -43,55 +42,55 @@ const addSupplier = async (req, res) => {
 };
 
 const getSupplier = async (req, res) => {
-    try {
-        const supplier = await Supplier.findAll();
-        return res.status(200).json({ success: true, supplier });
-    } catch (error) {
-        console.error('Error fetching Supplier:', error);
-        return res.status(500).json({ success: false, message: 'Server error' });
-    }
+  try {
+    const supplier = await Supplier.findAll();
+    return res.status(200).json({ success: true, supplier });
+  } catch (error) {
+    console.error('Error fetching Supplier:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
 };
 
-// const updateCategory = async (req, res)=>{
+const updateSupplier = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { supplierName, company, supplierEmail, supplierPhone, supplierAddress } = req.body;
 
-// try {
-//   const { id } = req.params;
-//   const { categoryName, categoryDescription } = req.body;
+    const existingSupplier = await Supplier.findByPk(id);
+    if (!existingSupplier) {
+      return res.status(404).json({ success: false, message: 'Supplier not found' });
+    }
 
-//   // Check if the category exists
-//   const existingCategory = await Category.findById(id);
-//   if (!existingCategory) {
-//     return res.status(404).json({ success: false, message: 'Category not found' });
-//   }
+    await existingSupplier.update({
+      supplierName,
+      company,
+      supplierEmail,
+      supplierPhone,
+      supplierAddress,
+    });
 
-//   const updatedCategory = await Category.findByIdAndUpdate(
-//     id,
-//     { categoryName, categoryDescription },
-//     { new: true }
-//   );
+    return res.status(200).json({ success: true, message: 'Supplier updated successfully' });
+  } catch (error) {
+    console.error('Error updating supplier:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
 
-//   return res.status(200).json({ success: true, message: 'Category updated successfully' });
-// } catch (error) {
-//   console.error('Error updating category:', error);
-//   return res.status(500).json({ success: false, message: 'Server error' });
-// }
-// }
+const deleteSupplier = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-// const deleteCategory = async (req, res) => {
-//   try {
-//     const { id } = req.params;
+    const existingSupplier = await Supplier.findByPk(id);
+    if (!existingSupplier) {
+      return res.status(404).json({ success: false, message: 'Supplier not found' });
+    }
 
-//     // Check if the category exists
-//     const existingCategory = await Category.findById(id);
-//     if (!existingCategory) {
-//       return res.status(404).json({ success: false, message: 'Category not found' });
-//     }
+    await existingSupplier.destroy();
+    return res.status(200).json({ success: true, message: 'Supplier deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting supplier:', error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
 
-//     await Category.findByIdAndDelete(id);
-//     return res.status(200).json({ success: true, message: 'Category deleted successfully' });
-//   } catch (error) {
-//     console.error('Error deleting category:', error);
-//     return res.status(500).json({ success: false, message: 'Server error' });
-//   }
-// };
-export { addSupplier ,getSupplier };
+export { addSupplier, getSupplier, updateSupplier, deleteSupplier };

@@ -1,26 +1,70 @@
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
+import Supplier from "../models/Supplier.js";
 
 const addProduct = async (req, res) => {
   try {
-    const { productName, categoryId, brand, price, quantity, description } = req.body;
+    const {
+      sku,
+      productName,
+      categoryId,
+      brand,
+      color,
+      size,
+      gender,
+      material,
+      supplierId,
+      purchasePrice,
+      sellingPrice,
+      quantity,
+      description,
+    } = req.body;
 
-    if (!productName || !categoryId || !brand || price === undefined || price === "" || quantity === undefined || quantity === "") {
+    if (
+      !sku ||
+      !productName ||
+      !categoryId ||
+      !brand ||
+      !color ||
+      !size ||
+      !gender ||
+      !supplierId ||
+      purchasePrice === undefined ||
+      purchasePrice === "" ||
+      sellingPrice === undefined ||
+      sellingPrice === "" ||
+      quantity === undefined ||
+      quantity === ""
+    ) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
       });
     }
 
-    const existingProduct = await Product.findOne({ where: { productName } });
+    const existingProduct = await Product.findOne({ where: { sku } });
     if (existingProduct) {
       return res.status(400).json({
         success: false,
-        message: "Product already exists",
+        message: "Product with this SKU already exists",
       });
     }
 
-    await Product.create({ productName, categoryId, brand, price, quantity, description });
+    await Product.create({
+      sku,
+      productName,
+      categoryId,
+      brand,
+      color,
+      size,
+      gender,
+      material,
+      supplierId,
+      purchasePrice,
+      sellingPrice,
+      quantity,
+      description,
+    });
 
     return res.status(201).json({
       success: true,
@@ -38,7 +82,12 @@ const addProduct = async (req, res) => {
 
 const getProduct = async (req, res) => {
   try {
-    const products = await Product.findAll({ include: { model: Category, as: "category" } });
+    const products = await Product.findAll({
+      include: [
+        { model: Category, as: "category" },
+        { model: Supplier, as: "supplier" },
+      ],
+    });
     return res.status(200).json({ success: true, products });
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -49,14 +98,42 @@ const getProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { productName, categoryId, brand, price, quantity, description } = req.body;
+    const {
+      sku,
+      productName,
+      categoryId,
+      brand,
+      color,
+      size,
+      gender,
+      material,
+      supplierId,
+      purchasePrice,
+      sellingPrice,
+      quantity,
+      description,
+    } = req.body;
 
     const existingProduct = await Product.findByPk(id);
     if (!existingProduct) {
       return res.status(404).json({ success: false, message: "Product not found" });
     }
 
-    await existingProduct.update({ productName, categoryId, brand, price, quantity, description });
+    await existingProduct.update({
+      sku,
+      productName,
+      categoryId,
+      brand,
+      color,
+      size,
+      gender,
+      material,
+      supplierId,
+      purchasePrice,
+      sellingPrice,
+      quantity,
+      description,
+    });
 
     return res.status(200).json({ success: true, message: "Product updated successfully" });
   } catch (error) {

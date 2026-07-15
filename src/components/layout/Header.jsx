@@ -4,7 +4,7 @@ import {
   Layers,
   Package,
   Truck,
-  ShoppingCart,
+  ClipboardList,
   User,
   LogOut,
 } from "lucide-react";
@@ -54,8 +54,8 @@ const Header = () => {
           <Truck size={25} /> Suppliers
         </Link>
 
-        <Link to="/sales" className={baseItem}>
-          <ShoppingCart size={25} /> Orders
+        <Link to="/purchase" className={baseItem}>
+          <ClipboardList size={25} /> Purchase
         </Link>
 
         <Link to="/profile" className={baseItem}>

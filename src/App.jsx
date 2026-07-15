@@ -8,6 +8,7 @@ import Products from "./components/pages/Products";
 import Profile from "./components/pages/Profile";
 import Sales from "./components/pages/Sales";
 import Suppliers from "./components/pages/Suppliers";
+import Purchase from "./components/pages/Purchase";
 import RootLayout from "./components/layout/RootLayout";
 import Root from "./components/Root";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
@@ -52,6 +53,14 @@ function App() {
           />
 
           <Route path="sales" element={<Sales />} />
+          <Route
+            path="/purchase"
+            element={
+              <ProtectedRoutes requireRole={["admin"]}>
+                <Purchase />
+              </ProtectedRoutes>
+            }
+          />
           <Route
             path="unauthorized"
             element={
