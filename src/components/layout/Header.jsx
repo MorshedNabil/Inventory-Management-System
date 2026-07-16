@@ -14,7 +14,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const baseItem =
     "flex items-center gap-3 px-4 py-2 rounded-lg transition text-gray-300 hover:bg-[#3CA07E] hover:text-white";
@@ -23,7 +23,8 @@ const Header = () => {
     if (user.role === "admin") {
       navigate("/admindashboard");
     } else {
-      navigate("/sellerdashboard");
+      // TODO: no seller-facing dashboard exists yet — pick a real destination for seller-role users.
+      navigate("/unauthorized");
     }
   };
 
@@ -66,7 +67,10 @@ const Header = () => {
       {/* Logout */}
       <div className="p-4 border-t border-gray-800">
         <button
-          onClick={() => navigate("/")}
+          onClick={() => {
+            logout();
+            navigate("/login");
+          }}
           className="flex items-center gap-3 w-full px-4 py-2 rounded-lg
           text-gray-300 hover:bg-[#3CA07E] hover:text-white transition"
         >

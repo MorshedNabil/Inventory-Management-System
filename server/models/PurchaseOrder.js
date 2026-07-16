@@ -1,9 +1,10 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db/connection.js";
 import Supplier from "./Supplier.js";
-import Product from "./Product.js";
+import Category from "./Category.js";
 
 const PurchaseOrder = sequelize.define("PurchaseOrder", {
+  itemName: { type: DataTypes.STRING, allowNull: false },
   purchaseDate: { type: DataTypes.DATEONLY, allowNull: false, defaultValue: DataTypes.NOW },
   quantity: { type: DataTypes.INTEGER, allowNull: false },
   cost: { type: DataTypes.FLOAT, allowNull: false },
@@ -17,7 +18,7 @@ const PurchaseOrder = sequelize.define("PurchaseOrder", {
 PurchaseOrder.belongsTo(Supplier, { foreignKey: "supplierId", as: "supplier" });
 Supplier.hasMany(PurchaseOrder, { foreignKey: "supplierId", as: "purchaseOrders" });
 
-PurchaseOrder.belongsTo(Product, { foreignKey: "productId", as: "product" });
-Product.hasMany(PurchaseOrder, { foreignKey: "productId", as: "purchaseOrders" });
+PurchaseOrder.belongsTo(Category, { foreignKey: "categoryId", as: "category" });
+Category.hasMany(PurchaseOrder, { foreignKey: "categoryId", as: "purchaseOrders" });
 
 export default PurchaseOrder;

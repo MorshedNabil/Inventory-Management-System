@@ -1,14 +1,15 @@
 import PurchaseOrder from "../models/PurchaseOrder.js";
 import Supplier from "../models/Supplier.js";
-import Product from "../models/Product.js";
+import Category from "../models/Category.js";
 
 const addPurchaseOrder = async (req, res) => {
   try {
-    const { supplierId, productId, purchaseDate, quantity, cost, paymentStatus } = req.body;
+    const { supplierId, itemName, categoryId, purchaseDate, quantity, cost, paymentStatus } = req.body;
 
     if (
       !supplierId ||
-      !productId ||
+      !itemName ||
+      !categoryId ||
       quantity === undefined ||
       quantity === "" ||
       cost === undefined ||
@@ -25,14 +26,15 @@ const addPurchaseOrder = async (req, res) => {
       return res.status(404).json({ success: false, message: "Supplier not found" });
     }
 
-    const product = await Product.findByPk(productId);
-    if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
+    const category = await Category.findByPk(categoryId);
+    if (!category) {
+      return res.status(404).json({ success: false, message: "Category not found" });
     }
 
     await PurchaseOrder.create({
       supplierId,
-      productId,
+      itemName,
+      categoryId,
       purchaseDate,
       quantity,
       cost,
@@ -62,7 +64,7 @@ const getPurchaseOrders = async (req, res) => {
       where,
       include: [
         { model: Supplier, as: "supplier" },
-        { model: Product, as: "product" },
+        { model: Category, as: "category" },
       ],
       order: [["purchaseDate", "DESC"]],
     });
@@ -77,7 +79,7 @@ const getPurchaseOrders = async (req, res) => {
 const updatePurchaseOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    const { supplierId, productId, purchaseDate, quantity, cost, paymentStatus } = req.body;
+    const { supplierId, itemName, categoryId, purchaseDate, quantity, cost, paymentStatus } = req.body;
 
     const existingOrder = await PurchaseOrder.findByPk(id);
     if (!existingOrder) {
@@ -86,7 +88,8 @@ const updatePurchaseOrder = async (req, res) => {
 
     await existingOrder.update({
       supplierId,
-      productId,
+      itemName,
+      categoryId,
       purchaseDate,
       quantity,
       cost,

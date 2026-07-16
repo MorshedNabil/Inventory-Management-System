@@ -22,7 +22,8 @@ const emptySupplierForm = {
 const todayDate = () => new Date().toISOString().slice(0, 10);
 
 const emptyOrderForm = () => ({
-  productId: "",
+  itemName: "",
+  categoryId: "",
   purchaseDate: todayDate(),
   quantity: "",
   cost: "",
@@ -39,6 +40,7 @@ const Suppliers = () => {
   const [loading, setLoading] = useState(false);
   const [suppliers, setSuppliers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
 
   const [addEditModel, setAddEditModel] = useState(null);
@@ -78,9 +80,22 @@ const Suppliers = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/category",
+        authHeaders()
+      );
+      setCategories(response.data.categories);
+    } catch (error) {
+      console.error("Error fetching Categories:", error);
+    }
+  };
+
   useEffect(() => {
     fetchSuppliers();
     fetchProducts();
+    fetchCategories();
   }, []);
 
   const filteredSuppliers = useMemo(() => {
@@ -200,7 +215,8 @@ const Suppliers = () => {
   const handleEditOrderClick = (order) => {
     setEditOrder(order.id);
     setOrderForm({
-      productId: String(order.productId),
+      itemName: order.itemName,
+      categoryId: String(order.categoryId),
       purchaseDate: order.purchaseDate,
       quantity: order.quantity,
       cost: order.cost,
@@ -220,7 +236,7 @@ const Suppliers = () => {
       const payload = {
         ...orderForm,
         supplierId: ordersModel.id,
-        productId: parseInt(orderForm.productId, 10),
+        categoryId: parseInt(orderForm.categoryId, 10),
         quantity: parseInt(orderForm.quantity, 10),
         cost: parseFloat(orderForm.cost),
       };
@@ -453,6 +469,7 @@ const Suppliers = () => {
                   <tr className="bg-gray-100">
                     <th className="border border-gray-300 p-2">Purchase ID</th>
                     <th className="border border-gray-300 p-2">Item</th>
+                    <th className="border border-gray-300 p-2">Category</th>
                     <th className="border border-gray-300 p-2">Purchase Date</th>
                     <th className="border border-gray-300 p-2">Quantity</th>
                     <th className="border border-gray-300 p-2">Cost</th>
@@ -464,7 +481,8 @@ const Suppliers = () => {
                   {orders.map((order) => (
                     <tr key={order.id}>
                       <td className="border border-gray-300 p-2">{order.id}</td>
-                      <td className="border border-gray-300 p-2">{order.product?.productName}</td>
+                      <td className="border border-gray-300 p-2">{order.itemName}</td>
+                      <td className="border border-gray-300 p-2">{order.category?.categoryName}</td>
                       <td className="border border-gray-300 p-2">{order.purchaseDate}</td>
                       <td className="border border-gray-300 p-2">{order.quantity}</td>
                       <td className="border border-gray-300 p-2">{order.cost}</td>
@@ -489,7 +507,7 @@ const Suppliers = () => {
                   ))}
                   {orders.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="border border-gray-300 p-4 text-center">
+                      <td colSpan={8} className="border border-gray-300 p-4 text-center">
                         No purchase orders yet.
                       </td>
                     </tr>
@@ -508,18 +526,36 @@ const Suppliers = () => {
               <FieldSet>
                 <FieldGroup className="grid grid-cols-2 gap-4">
                   <Field>
-                    <FieldLabel htmlFor="productId">Item</FieldLabel>
+                    <FieldLabel htmlFor="itemName">Item</FieldLabel>
+                    <Input
+                      className="border p-1 bg-white rounded px-4"
+                      id="itemName"
+                      type="text"
+                      list="item-suggestions"
+                      placeholder="ex: Classic Cotton Shirt"
+                      name="itemName"
+                      value={orderForm.itemName}
+                      onChange={handleOrderForm}
+                    />
+                    <datalist id="item-suggestions">
+                      {products.map((product) => (
+                        <option key={product.id} value={product.productName} />
+                      ))}
+                    </datalist>
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="categoryId">Category</FieldLabel>
                     <select
                       className="border p-1 bg-white rounded px-4 h-9"
-                      id="productId"
-                      name="productId"
-                      value={orderForm.productId}
+                      id="categoryId"
+                      name="categoryId"
+                      value={orderForm.categoryId}
                       onChange={handleOrderForm}
                     >
-                      <option value="">Select a product</option>
-                      {products.map((product) => (
-                        <option key={product.id} value={String(product.id)}>
-                          {product.productName}
+                      <option value="">Select a category</option>
+                      {categories.map((category) => (
+                        <option key={category.id} value={String(category.id)}>
+                          {category.categoryName}
                         </option>
                       ))}
                     </select>

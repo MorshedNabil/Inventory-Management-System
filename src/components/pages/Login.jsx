@@ -42,10 +42,10 @@ const Login = () => {
       if (response.data.success) {
         await login(response.data.user, response.data.token);
         if (response.data.user.role === "admin") {
-         
           navigate("/admindashboard");
         } else {
-          navigate("/sellerdashboard");
+          // TODO: no seller-facing dashboard exists yet — pick a real destination for seller-role users.
+          navigate("/unauthorized");
         }
       } else {
         alert(response.data.message);

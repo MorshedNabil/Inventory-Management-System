@@ -165,7 +165,8 @@ const seed = async () => {
     const purchaseOrdersData = [
       {
         supplierId: suppliers["Rahim Uddin"].id,
-        productId: products["SKU-1001"].id,
+        itemName: products["SKU-1001"].productName,
+        categoryId: categories["Shirt"].id,
         purchaseDate: "2026-05-10",
         quantity: 40,
         cost: 26000,
@@ -173,7 +174,8 @@ const seed = async () => {
       },
       {
         supplierId: suppliers["Karim Sheikh"].id,
-        productId: products["SKU-1002"].id,
+        itemName: products["SKU-1002"].productName,
+        categoryId: categories["T-shirt"].id,
         purchaseDate: "2026-06-02",
         quantity: 80,
         cost: 24000,
@@ -181,7 +183,8 @@ const seed = async () => {
       },
       {
         supplierId: suppliers["Nusrat Jahan"].id,
-        productId: products["SKU-1003"].id,
+        itemName: products["SKU-1003"].productName,
+        categoryId: categories["Jeans"].id,
         purchaseDate: "2026-06-18",
         quantity: 25,
         cost: 22500,
@@ -189,7 +192,8 @@ const seed = async () => {
       },
       {
         supplierId: suppliers["Rahim Uddin"].id,
-        productId: products["SKU-1004"].id,
+        itemName: products["SKU-1004"].productName,
+        categoryId: categories["Panjabi"].id,
         purchaseDate: "2026-07-01",
         quantity: 15,
         cost: 18000,
@@ -197,7 +201,8 @@ const seed = async () => {
       },
       {
         supplierId: suppliers["Karim Sheikh"].id,
-        productId: products["SKU-1005"].id,
+        itemName: products["SKU-1005"].productName,
+        categoryId: categories["T-shirt"].id,
         purchaseDate: "2026-07-05",
         quantity: 60,
         cost: 16800,
@@ -205,7 +210,8 @@ const seed = async () => {
       },
       {
         supplierId: suppliers["Nusrat Jahan"].id,
-        productId: products["SKU-1006"].id,
+        itemName: products["SKU-1006"].productName,
+        categoryId: categories["Jeans"].id,
         purchaseDate: "2026-07-10",
         quantity: 30,
         cost: 15000,
@@ -217,7 +223,7 @@ const seed = async () => {
       await PurchaseOrder.findOrCreate({
         where: {
           supplierId: data.supplierId,
-          productId: data.productId,
+          itemName: data.itemName,
           purchaseDate: data.purchaseDate,
         },
         defaults: data,

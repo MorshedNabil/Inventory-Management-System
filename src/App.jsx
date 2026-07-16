@@ -3,7 +3,6 @@ import "./App.css";
 import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
 import AdminDashboard from "./components/pages/AdminDashboard";
-import SellerDashboard from "./components/pages/SellerDashboard";
 import Products from "./components/pages/Products";
 import Profile from "./components/pages/Profile";
 import Sales from "./components/pages/Sales";
@@ -29,7 +28,6 @@ function App() {
               </ProtectedRoutes>
             }
           />
-          <Route path="sellerdashboard" element={<SellerDashboard />} />
           <Route path="register" element={<Register />} />
           <Route path="products" element={<Products />} />
           <Route path="categories" element={<Categories />} />

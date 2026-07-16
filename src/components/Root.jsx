@@ -14,7 +14,8 @@ const Root=()=>{
     if (user.role === "admin") {
       navigate("admindashboard");
     } else if (user.role === "seller") {
-      navigate("sellerdashboard");
+      // TODO: no seller-facing dashboard exists yet — pick a real destination for seller-role users.
+      navigate("unauthorized");
     } else {
       navigate("login");
     }
