@@ -10,6 +10,7 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
 
 const SIZES = ["S", "M", "L", "XL", "XXL"];
 const GENDERS = ["Men", "Women", "Kids"];
@@ -31,6 +32,8 @@ const emptyForm = {
 };
 
 const Products = () => {
+  const { user } = useAuth();
+  const canDelete = user.role === "admin" || user.role === "manager";
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -324,12 +327,14 @@ const Products = () => {
                       >
                         Edit
                       </Button>
-                      <Button
-                        className="bg-[#0C2B4E] hover:bg-red-700 duration-300"
-                        onClick={() => handleDelete(product.id)}
-                      >
-                        Delete
-                      </Button>
+                      {canDelete && (
+                        <Button
+                          className="bg-[#0C2B4E] hover:bg-red-700 duration-300"
+                          onClick={() => handleDelete(product.id)}
+                        >
+                          Delete
+                        </Button>
+                      )}
                     </div>
                   </td>
                 </tr>

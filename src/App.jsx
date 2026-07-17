@@ -3,6 +3,8 @@ import "./App.css";
 import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
 import AdminDashboard from "./components/pages/AdminDashboard";
+import ManagerDashboard from "./components/pages/ManagerDashboard";
+import StaffDashboard from "./components/pages/StaffDashboard";
 import Products from "./components/pages/Products";
 import Profile from "./components/pages/Profile";
 import Sales from "./components/pages/Sales";
@@ -23,19 +25,49 @@ function App() {
           <Route
             path="admindashboard"
             element={
-              <ProtectedRoutes requireRole={"admin"}>
+              <ProtectedRoutes requireRole={["admin"]}>
                 <AdminDashboard />
               </ProtectedRoutes>
             }
           />
+          <Route
+            path="managerdashboard"
+            element={
+              <ProtectedRoutes requireRole={["manager"]}>
+                <ManagerDashboard />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="staffdashboard"
+            element={
+              <ProtectedRoutes requireRole={["inventory_staff"]}>
+                <StaffDashboard />
+              </ProtectedRoutes>
+            }
+          />
           <Route path="register" element={<Register />} />
-          <Route path="products" element={<Products />} />
-          <Route path="categories" element={<Categories />} />
+          <Route
+            path="products"
+            element={
+              <ProtectedRoutes requireRole={["admin", "manager", "inventory_staff"]}>
+                <Products />
+              </ProtectedRoutes>
+            }
+          />
+          <Route
+            path="categories"
+            element={
+              <ProtectedRoutes requireRole={["admin", "manager"]}>
+                <Categories />
+              </ProtectedRoutes>
+            }
+          />
 
           <Route
             path="/profile"
             element={
-              <ProtectedRoutes requireRole={["admin"]}>
+              <ProtectedRoutes requireRole={["admin", "manager", "inventory_staff"]}>
                 <Profile />
               </ProtectedRoutes>
             }
@@ -44,7 +76,7 @@ function App() {
           <Route
             path="/suppliers"
             element={
-              <ProtectedRoutes requireRole={["admin"]}>
+              <ProtectedRoutes requireRole={["admin", "manager"]}>
                 <Suppliers />
               </ProtectedRoutes>
             }
@@ -54,7 +86,7 @@ function App() {
           <Route
             path="/purchase"
             element={
-              <ProtectedRoutes requireRole={["admin"]}>
+              <ProtectedRoutes requireRole={["admin", "manager"]}>
                 <Purchase />
               </ProtectedRoutes>
             }

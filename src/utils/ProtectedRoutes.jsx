@@ -1,10 +1,14 @@
 import { useAuth } from "@/context/AuthContext";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const ProtectedRoutes = ({ children, requireRole }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const allowedRoles = useMemo(
+    () => (Array.isArray(requireRole) ? requireRole : [requireRole]),
+    [requireRole]
+  );
 
   useEffect(() => {
     if (!user) {
@@ -12,14 +16,14 @@ const ProtectedRoutes = ({ children, requireRole }) => {
       return;
     }
 
-    if (!requireRole.includes(user.role)) {
+    if (!allowedRoles.includes(user.role)) {
       navigate("/unauthorized");
       return;
     }
-  }, [user, navigate, requireRole]);
+  }, [user, navigate, allowedRoles]);
 
   if (!user) return null;
-  if (!requireRole.includes(user.role)) return null;
+  if (!allowedRoles.includes(user.role)) return null;
 
   return children;
 };

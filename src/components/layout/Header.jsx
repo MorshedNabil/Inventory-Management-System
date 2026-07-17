@@ -22,11 +22,16 @@ const Header = () => {
   const handleLink = () => {
     if (user.role === "admin") {
       navigate("/admindashboard");
+    } else if (user.role === "manager") {
+      navigate("/managerdashboard");
+    } else if (user.role === "inventory_staff") {
+      navigate("/staffdashboard");
     } else {
-      // TODO: no seller-facing dashboard exists yet — pick a real destination for seller-role users.
       navigate("/unauthorized");
     }
   };
+
+  const canManageCatalog = user.role === "admin" || user.role === "manager";
 
   return (
     <aside className="w-64 h-screen bg-[#0C2B4E] fixed left-0 top-0 flex flex-col">
@@ -43,21 +48,27 @@ const Header = () => {
           <Home size={25} /> Dashboard
         </div>
 
-        <Link to="/categories" className={baseItem}>
-          <Layers size={25} /> Categories
-        </Link>
+        {canManageCatalog && (
+          <Link to="/categories" className={baseItem}>
+            <Layers size={25} /> Categories
+          </Link>
+        )}
 
         <Link to="/products" className={baseItem}>
           <Package size={25} /> Products
         </Link>
 
-        <Link to="/suppliers" className={baseItem}>
-          <Truck size={25} /> Suppliers
-        </Link>
+        {canManageCatalog && (
+          <Link to="/suppliers" className={baseItem}>
+            <Truck size={25} /> Suppliers
+          </Link>
+        )}
 
-        <Link to="/purchase" className={baseItem}>
-          <ClipboardList size={25} /> Purchase
-        </Link>
+        {canManageCatalog && (
+          <Link to="/purchase" className={baseItem}>
+            <ClipboardList size={25} /> Purchase
+          </Link>
+        )}
 
         <Link to="/profile" className={baseItem}>
           <User size={25} /> Profile

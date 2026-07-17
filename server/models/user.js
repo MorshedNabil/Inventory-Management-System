@@ -7,8 +7,12 @@ const User = sequelize.define("User", {
   password: { type: DataTypes.STRING, allowNull: false },
   address: { type: DataTypes.STRING },
   role: {
-    type: DataTypes.ENUM("admin", "seller"),
-    defaultValue: "seller",
+    type: DataTypes.ENUM("admin", "manager", "inventory_staff"),
+    defaultValue: "inventory_staff",
+  },
+  status: {
+    type: DataTypes.ENUM("pending", "approved", "rejected"),
+    defaultValue: "pending",
   },
 });
 

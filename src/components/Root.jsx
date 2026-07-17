@@ -13,11 +13,12 @@ const Root=()=>{
     // Check if the user is authenticated and redirect accordingly
     if (user.role === "admin") {
       navigate("admindashboard");
-    } else if (user.role === "seller") {
-      // TODO: no seller-facing dashboard exists yet — pick a real destination for seller-role users.
-      navigate("unauthorized");
+    } else if (user.role === "manager") {
+      navigate("managerdashboard");
+    } else if (user.role === "inventory_staff") {
+      navigate("staffdashboard");
     } else {
-      navigate("login");
+      navigate("unauthorized");
     }
   }
   else{

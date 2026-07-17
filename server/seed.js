@@ -15,7 +15,8 @@ const register = async()=>{
             email:"admin@gmail.com",
             password:hashPassword,
             address:"admin address",
-            role:"admin"
+            role:"admin",
+            status:"approved"
 
         })
          console.log("Admin created successfully");

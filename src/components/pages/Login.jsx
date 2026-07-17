@@ -43,8 +43,11 @@ const Login = () => {
         await login(response.data.user, response.data.token);
         if (response.data.user.role === "admin") {
           navigate("/admindashboard");
+        } else if (response.data.user.role === "manager") {
+          navigate("/managerdashboard");
+        } else if (response.data.user.role === "inventory_staff") {
+          navigate("/staffdashboard");
         } else {
-          // TODO: no seller-facing dashboard exists yet — pick a real destination for seller-role users.
           navigate("/unauthorized");
         }
       } else {
